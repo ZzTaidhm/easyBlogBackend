@@ -5,3 +5,4 @@ easyBlog 后端服务
 ### 数据库: mysql
 ### ORM框架：Sequelize
 ### 接口文档： apidoc
+### websocket： socket.io
