@@ -1,13 +1,32 @@
 const Koa = require('koa');
-const websockify = require('koa-websocket');
-const app = websockify(new Koa())
-const views = require('koa-views')
-const json = require('koa-json')
-const onerror = require('koa-onerror')
-const bodyparser = require('koa-bodyparser')
-const logger = require('koa-logger')
-const index = require('./routes/index')
-const users = require('./routes/users')
+const app = new Koa();
+const cors = require('koa2-cors');
+const views = require('koa-views');
+const json = require('koa-json');
+const onerror = require('koa-onerror');
+const bodyparser = require('koa-bodyparser');
+const logger = require('koa-logger');
+const index = require('./routes/index');
+const users = require('./routes/users');
+
+// socket 连接
+// io.on('connection', (socket) => {
+//     console.log('进来没')
+//     socket.on('chat message', (msg) => {
+//         console.log('message: ' + msg);
+//         io.emit('chat message', msg);
+//     })
+//     socket.on('disconnect', () => {
+//         console.log('user disconnect');
+//     })
+//
+//     setInterval(function() {
+//         console.log('准备发送啦')
+//         socket.send('This is a message from the server,hello world' + new Date().getTime());
+//     },1000);
+// });
+
+
 // error handler
 onerror(app)
 
@@ -34,26 +53,13 @@ app.use(async (ctx, next) => {
 // routes
 app.use(index.routes(), index.allowedMethods());
 app.use(users.routes(), users.allowedMethods());
-// koa 封装的websocket
-// app.ws.use(function (ctx, next) {
-//   return next(ctx);
-// });
- let ctxs = [];
- app.ws.use((ctx, next) => {
-   ctxs.push(ctx);
-   ctx.websocket.on("message", (message) => {
-     console.log(message);
-     for(let i = 0; i < ctx.length; i++){
-       if(ctx== ctxs[i]) continue;
-       ctxs[i].websocket.send(message);
-     }
-   })
- })
 
-// app.ws.use(index.routes(), index.allowedMethods());
 // error-handling
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
 });
+
+// cors
+app.use(cors());
 
 module.exports = app;
