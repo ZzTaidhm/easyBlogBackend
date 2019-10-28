@@ -1,0 +1,16 @@
+define({
+  "title": "丁华敏的接口文档",
+  "url": "http://localhost:3008",
+  "sampleUrl": "http://localhost:3008",
+  "name": "easy_blog_backend",
+  "version": "1.0.0",
+  "description": "",
+  "defaultVersion": "0.0.0",
+  "apidoc": "0.3.0",
+  "generator": {
+    "name": "apidoc",
+    "time": "2019-10-28T03:02:09.132Z",
+    "url": "http://apidocjs.com",
+    "version": "0.17.7"
+  }
+});
